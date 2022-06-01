@@ -63,9 +63,7 @@ const Weather = () => {
                 <Message>{message}</Message>
                 <Time>{dateBuilder(new Date())}</Time>
                 <form onSubmit={handleSubmit}>
-                    <h3>
-                        <input placeholder='Cerca' type='text' value={city} onChange={handleChange} />
-                    </h3>
+                    <input placeholder='Cerca' type='text' value={city} onChange={handleChange} />
                 </form>
                 {/* {JSON.stringify(weather)} */}
                 {
@@ -90,18 +88,36 @@ const Weather = () => {
 }
 
 const WeatherContainer = styled.div`
-    padding: 40px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 20px;
     box-shadow: 0 5px 20px rgba(0,0,0,.5);
     position: relative;
+    background-color: rgba(255,255,255,0.5);
+    width: 100%;
+    max-width: 500px; 
+    margin: 0 auto;
     img{
         widht: 100%;
     }
-    background-color: white;
-    min-height: 420px;
+    h1 {
+        margin-top: 20px;
+    }
+    form {
+        width: 100%;
+        input {
+            width: 100%;
+            height: 60px;
+            border: none;
+            border-radius: 20px;
+            padding: 20px;
+            font-size: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.1);
+            opacity: 0.75;
+        }
+    }
 `;
 
 const ImageBackground = styled.div`
@@ -129,7 +145,7 @@ const ImageBackground = styled.div`
 
 const Message = styled.div`
     position: absolute;
-    top: 20px; 
+    top: 30px; 
     left: 0;
     width: 100%;
     text-align: center;
@@ -141,7 +157,7 @@ const Message = styled.div`
 const Time = styled.div`
     font-weight: bold;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin: 40px 0 20px 0;
 `;
 
 export default Weather;
