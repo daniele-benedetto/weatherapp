@@ -1,6 +1,10 @@
 const getService = async (url) => {
-    const api = await fetch(url);
-    const data = await api.json();
+    const api = await fetch(url).then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+    const data = await api;
     return data;
 }
 
