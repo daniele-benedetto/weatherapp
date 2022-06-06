@@ -5,7 +5,7 @@ import Weather from '../components/Weather';
 const Home = () => {
     return (
         <>
-            <MultiWeather />
+            <Weather />
         </>
     );
 }
