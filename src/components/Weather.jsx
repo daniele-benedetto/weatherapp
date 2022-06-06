@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { getWeatherServiceSearch } from '../service/weather.service';
 import styled from 'styled-components';
-import sunClouds from '../assets/images/sunClouds.jpg';
+import dateBuilder from '../utils/dateBuilder';
 
-const linkImage = "https://openweathermap.org/img/w/"
-const extImage = "png"
+const linkIcon = "https://openweathermap.org/img/w/";
+const extIcon = "png";
+
+const linkImage = "https://source.unsplash.com/600x900/?";
 
 const Weather = () => {
 
 	const [weather, setWeather] = useState(null);
-    const [city, setCity] = useState('Modena');
-    const [message, setMessage] = useState(' ');
+    const [city, setCity] = useState('');
+    const [message, setMessage] = useState('');
+
 
 	useEffect(() => {
 		getWeather();
@@ -27,10 +30,12 @@ const Weather = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(city != '') {
-            setMessage('')
+            setMessage('');
             getWeather();
-        } else {
+        } else if (city == '') {
             setMessage('Inserisci il nome di una città')
+        } else {
+            
         }
         setCity('');
     }
@@ -40,22 +45,13 @@ const Weather = () => {
         setCity(value)
     }
 
-    const getImage = (img) => {
-        return `${linkImage}${img}.${extImage}`
+    const getIcon = (icon) => {
+        return `${linkIcon}${icon}.${extIcon}`
     }
 
-    const dateBuilder = (d) => {
-        let months = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
-        let days = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
-    
-        let day = days[d.getDay()];
-        let date = d.getDate();
-        let month = months[d.getMonth()];
-        let year = d.getFullYear();
-
-        
-        return `${day} ${date} ${month} ${year}`
-      }
+    const getImage = (img) => {
+        return `${linkImage}${img}`;
+    }
 
     return (        
         <>
@@ -64,6 +60,7 @@ const Weather = () => {
                 <Time>{dateBuilder(new Date())}</Time>
                 <form onSubmit={handleSubmit}>
                     <input placeholder='Cerca' type='text' value={city} onChange={handleChange} />
+                    <Button>Cerca</Button>
                 </form>
                 {/* {JSON.stringify(weather)} */}
                 {
@@ -72,7 +69,7 @@ const Weather = () => {
                         {
                             weather.weather && weather.weather.length > 0 && weather.weather.map((item,idx) => {
                                 return <>
-                                    <img src={getImage(item.icon)} alt="" />
+                                    <img src={getIcon(item.icon)} alt="" />
                                     <h2>{item.description}</h2>
                                 </>
                             })
@@ -82,7 +79,12 @@ const Weather = () => {
                     </>
                 }
             </WeatherContainer>
-            <ImageBackground style={{backgroundImage: `url(${sunClouds})`}} />
+            {
+                weather && <ImageBackground style={{backgroundImage: `url(${getImage(weather.weather[0].main)})`}} />
+            }
+                        {
+                !weather && <ImageBackground style={{backgroundImage: `url(${getImage('weather')})`}} />
+            }
 		</>
     );
 }
@@ -158,6 +160,20 @@ const Time = styled.div`
     font-weight: bold;
     font-size: 24px;
     margin: 40px 0 20px 0;
+`;
+
+const Button = styled.button`
+    width: 100%;
+    max-width: 300px;
+    background-color: azure;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    margin: 20px auto;
+    display: block;
+    box-shadow: 0 5px 20px rgba(0,0,0,.1);
+    font-weight: bold;
+    font-size 16px;
 `;
 
 export default Weather;
