@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getMultiWeatherServiceSearch } from '../service/weather.service';
-
+import Card from '../ui/Card';
+import MultiWeatherContainer from '../ui/MultiWeatherContainer';
 const MultiWeather = () => {
 
 	const [weather, setWeather] = useState(null);
@@ -17,12 +18,31 @@ const MultiWeather = () => {
 
 		const data = await getMultiWeatherServiceSearch(city, lang, metric);
 		setWeather(data);
+		console.log(data.list[0].dt);
 	}
-
 
     return (        
         <>
-            {JSON.stringify(weather)}
+            {
+            	weather && <>
+                        <h2>{weather.city.name}</h2>
+						<MultiWeatherContainer>
+							{
+								weather.list && weather.list.length > 0 && weather.list.slice(8).map((item, idx) => {
+									return <>
+										{!(idx % 8) ?
+											<Card key={idx}>
+
+												{idx}
+												<h1>{item.dt_txt}</h1>
+											</Card>
+										: ''}
+									</>
+								})
+							}
+						</MultiWeatherContainer>
+                    </>
+                }
 		</>
     );
 }

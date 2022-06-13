@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { getWeatherServiceSearch } from '../service/weather.service';
-import styled from 'styled-components';
 import dateBuilder from '../utils/dateBuilder';
 import timeBuilder from '../utils/timeBuilder';
-import { BsCloudsFill, BsFillSunFill, BsSearch } from 'react-icons/bs';
+import BackgroundColor from '../ui/BackgroundColor';
+import WeatherContainer from '../ui/WeatherContainer';
+import Time from '../ui/Time';
+import { 
+    BsCloudsFill, 
+    BsFillCloudDrizzleFill,
+    BsFillCloudLightningRainFill, 
+    BsFillCloudRainHeavyFill, 
+    BsFillCloudSnowFill, 
+    BsFillSunFill, 
+    BsSearch 
+} from 'react-icons/bs';
 
 const Weather = () => {
 
@@ -12,7 +22,6 @@ const Weather = () => {
     const [message, setMessage] = useState('');
     const [color, setColor] = useState('#3096F5');
     const [icon, setIcon] = useState(null);
-    const [form, setForm] = useState('opacity-0');
 
 	useEffect(() => {
 		getWeather();
@@ -37,18 +46,28 @@ const Weather = () => {
         } else if(data.weather[0].main == 'Clouds') {
             setColor('#42519B');
             setIcon(<BsCloudsFill />)
+        } else if(data.weather[0].main == 'Thunderstorm') {
+            setColor('#004F63');
+            setIcon(<BsFillCloudLightningRainFill />)
+        } else if(data.weather[0].main == 'Drizzle') {
+            setColor('#1858C2');
+            setIcon(<BsFillCloudDrizzleFill />)
+        } else if(data.weather[0].main == 'Rain') {
+            setColor('#3A1EEA');
+            setIcon(<BsFillCloudRainHeavyFill />)
+        } else if(data.weather[0].main == 'Snow') {
+            setColor('#AAB1FA');
+            setIcon(<BsFillCloudSnowFill />)
+        } else {
+            setColor('#42519B');
+            setIcon(<BsCloudsFill />)
         }
-    }
-
-    const revealForm = () => {
-        setForm('opacity-1');
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if(city != '') {
             setMessage('');
-            setForm('opacity-0');
             getWeather();
             getLayout();
         } else {
@@ -65,7 +84,7 @@ const Weather = () => {
     return (   
         <>
             <WeatherContainer>
-                {/* {JSON.stringify(weather)} */}
+                <Time>{dateBuilder(new Date())} - {timeBuilder(new Date())}</Time>
                 {
                     weather && <>
                         {icon}
@@ -75,125 +94,23 @@ const Weather = () => {
                             weather.weather && weather.weather.length > 0 && weather.weather.map((item,idx) => {
                                 return <>
                                     <h3>{item.description}</h3>
-                                    {/* <h3>{item.main}</h3> */}
                                 </>
                             })
                         }
                         <p>Temp min: {weather.main.temp_min}° - Temp Max: {weather.main.temp_max}°<br/>
                         Umidità: {weather.main.humidity}° - Pressione: {weather.main.pressure}°</p>
-                        <Time>{dateBuilder(new Date())} - {timeBuilder(new Date())}</Time>
                     </>
                 }
-                <form onSubmit={handleSubmit} className={form}>
+                <form onSubmit={handleSubmit}>
                     <div>
                         <input placeholder='Cerca' type='text' value={city} onChange={handleChange} />
-                        <Button>Cerca</Button>
+                        <button><BsSearch/></button>
                     </div>
                 </form>
             </WeatherContainer>
             <BackgroundColor style={{backgroundColor: `${color}`}} />
-            <Search onClick={revealForm} ><BsSearch /></Search>
 		</>
     );
 }
-
-const WeatherContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
-    color: white;
-    h1 {
-        margin-top: 20px;
-        font-weight: bold;
-        font-size: 80px;
-        margin-left: 40px;
-    }
-    h2 {
-        font-weight: bold;
-        font-size: 48px;
-    }
-    h3 {
-        font-weight: bold;
-        font-size: 32px;
-    }
-    p{
-        text-align: center;
-    }
-    svg {
-        fill: white;
-        width: 120px;
-        height: 120px;
-    }
-    form {
-        width: 100%;
-        position: absolute;
-        top: 0%;
-        left: 0%;
-        background-color: rgba(0, 0, 0, 0.5);
-        height: 100%;
-        display:flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        div {
-            width: 100%;
-            max-width: 400px;
-            input {
-                width: 100%;
-                height: 60px;
-                border: none;
-                border-radius: 20px;
-                padding: 20px;
-                font-size: 20px;
-                box-shadow: 0 5px 20px rgba(0,0,0,.1);
-            }
-        }
-    }
-`;
-
-const BackgroundColor = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -10;
-`;
-
-const Time = styled.div`
-    font-weight: 700;
-    font-size: 24px;
-    margin: 40px 0 20px 0;
-    color: white;
-`;
-
-const Button = styled.button`
-    width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    margin: 20px auto;
-    display: block;
-    box-shadow: 0 5px 20px rgba(0,0,0,.1);
-    font-weight: bold;
-    font-size 16px;
-`;
-
-const Search = styled.a`
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    width: 30px;
-    height: 30px;
-    svg {
-        width: 100%;
-        height: 100%;
-        fill: white;
-        transform: translateX(-50%);
-    }
-`;
 
 export default Weather;
