@@ -37,7 +37,7 @@ const Home = () => {
 		getWeather();
         getMultiWeather();
         getLayout();
-	});
+	}, []);
 
 	const getWeather = async () => {
 		const data = await getWeatherServiceSearch(city, lang, metric);

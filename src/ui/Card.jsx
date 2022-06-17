@@ -5,21 +5,20 @@ const Card = styled.div`
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
-	background-color: white;
-	padding: 10px;
+	background-color: rgba(255, 255, 255, 0.1);
 	border-radius: 10px;
+	box-shadow: 0 5px 5px rgba(0,0,0,.3);
+
 	p {
 		font-weight: bold;
 		width: 100%;
 		text-align: center;
 		font-size: 20px;
-		color: #909090;
 	}
 	img {
 		width: auto;
 	}
 	i {
-		color: black;
 		font-size: 12px;
 		text-align: center;
 		width: 100%;
