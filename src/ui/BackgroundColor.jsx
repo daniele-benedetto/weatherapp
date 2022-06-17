@@ -7,6 +7,7 @@ const BackgroundColor = styled.div`
     width: 100%;
     height: 100%;
     z-index: -10;
+    transition: all .5s cubic-bezier(.215, .61, .355, 1);
 `;
 
 export default BackgroundColor;

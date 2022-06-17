@@ -16,7 +16,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  padding: 80px;
+  padding: 20px;
 }
 
 code {
@@ -28,6 +28,12 @@ code {
   width: 100%;
 }
 
-button:focus {
+button:focus,
+input:focus {
   outline: none;
+}
+
+h1, h2, h3, h4, h5, p {
+  margin: 0;
+  padding: 0;
 }

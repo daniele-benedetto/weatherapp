@@ -3,7 +3,7 @@ const getService = async (url) => {
         if (response.ok) {
           return response.json();
         }
-        throw new Error('Qualcosa è andato storto')
+        throw new Error('Qualcosa è andato storto');
       })
     const data = await api;
     return data;
